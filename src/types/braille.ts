@@ -10,9 +10,9 @@ export interface LetterValidation {
 }
 
 export enum Comparison {
-    NO_MATCH,
-    PARTIAL_MATCH,
-    FULL_MATCH
+    NO_MATCH = "NO_MATCH",
+    PARTIAL_MATCH = "PARTIAL_MATCH",
+    FULL_MATCH = "FULL_MATCH",
 }
 
 export type BrailleCellComparison = [Comparison, Comparison, Comparison, Comparison, Comparison, Comparison];

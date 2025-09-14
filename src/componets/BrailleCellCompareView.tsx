@@ -3,19 +3,18 @@ import React from "react";
 
 export const BrailleCellCompareView: React.FC<{
     value: BrailleCell;
-    comps: readonly number[];
+    comps?: Comparison[];
 }> = ({ value, comps }) => (
-    <div className="braille-cell braille-cell--readonly">
+    <div className="braille-cell">
         {value.map((isActive, index) => {
-            const match = comps[index] === Comparison.FULL_MATCH;
+            const matchString = comps ? (comps[index] === Comparison.FULL_MATCH ? "match" : (comps[index] === Comparison.NO_MATCH ? "miss" : "partial")) : "";
             return (
                 <span
                     key={index}
                     className={[
                         "braille-dot",
-                        // "braille-dot--readonly",
                         isActive ? "active" : "",
-                        match ? "match" : "miss",
+                        matchString
                     ].join(" ")}
                     aria-hidden
                     data-dot={index}

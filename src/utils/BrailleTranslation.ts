@@ -1,7 +1,6 @@
 import type {BrailleCell, TypedWord} from "../types/braille.ts";
 import {emptyBrailleCell} from "./DefaultValues.ts";
 
-// TODO: UEB Contracted Translation
 export const BRAILLE_PATTERNS: { [key: string]: BrailleCell } = {
     'a': [true, false, false, false, false, false],
     'b': [true, true, false, false, false, false],
@@ -46,7 +45,7 @@ export function translateCellsToWord(cells: TypedWord): string {
         const entry = Object.entries(BRAILLE_PATTERNS).find(([, pattern]) =>
             pattern.every((dot, idx) => dot === cell[idx])
         );
-        return entry ? entry[0] : '?';
+        return entry ? entry[0] : '_';
     } ).join('');
 }
 

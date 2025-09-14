@@ -14,14 +14,16 @@ export const BrailleCellInput: React.FC<BrailleCellInputProps> = ({ value, onCha
     };
 
     return (
-        <div className="braille-cell">
+        <div className="braille-cell editable show-numbers">
             {value.map((isActive, index) => (
                 <button
                     key={index}
-                    className={`braille-dot ${isActive ? 'active' : ''}`}
+                    className={`braille-dot editable ${isActive ? 'active' : ''}`}
                     data-dot={index}
+                    data-dot-number={index + 1}
                     onClick={() => toggleDot(index)}
-                    aria-label={`Dot ${index + 1}`}
+                    aria-label={`Dot ${index + 1} - ${isActive ? 'active' : 'inactive'}`}
+                    title={`Dot ${index + 1}`}
                 />
             ))}
         </div>
