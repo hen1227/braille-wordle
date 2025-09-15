@@ -1,16 +1,20 @@
 import type {TypedWord} from "../types/braille.ts";
 import {BrailleCellCompareView} from "./BrailleCellCompareView.tsx";
-import React from "react";
-import {translateCellsToWord} from "../utils/BrailleTranslation.ts";
+import React, {useMemo} from "react";
 import {useLettersContext} from "../contexts/useLettersContext.tsx";
+import {useBrailleTranslationContext} from "../contexts/useBrailleTranslationContext.tsx";
 
 export const PastGuessRow: React.FC<{
     guess: TypedWord;
 }> = ({ guess }) => {
 
+    const {translateCellsToWords, isInitialized} = useBrailleTranslationContext();
     const {getComparisonFor} = useLettersContext();
     const comps = getComparisonFor(guess);
-    const guessWord = translateCellsToWord(guess);
+
+    const guessWord = useMemo(()=> {
+        return translateCellsToWords(guess)
+    }, [guess, isInitialized]);
 
     return (
         <div className="past-guess-wrapper">

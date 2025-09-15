@@ -9,13 +9,16 @@ import "./styles/buttons.css";
 import "./styles/braille.css";
 import {useLettersContext} from "./contexts/useLettersContext.tsx";
 import {LettersContextProvider} from "./contexts/LettersContextProvider.tsx";
+import {BrailleTranslationContextProvider} from "./contexts/BrailleTranslationContextProvider.tsx";
 
 function App() {
     return (
-        <LettersContextProvider>
-            <ToastContainer />
-            <WrappedApp/>
-        </LettersContextProvider>
+        <BrailleTranslationContextProvider>
+            <LettersContextProvider>
+                <ToastContainer />
+                <WrappedApp/>
+            </LettersContextProvider>
+        </BrailleTranslationContextProvider>
     );
 }
 
@@ -51,7 +54,7 @@ const WrappedApp: React.FC = () => {
             </section>
 
             <section className="input-grid">
-                <h1 className="word-to-spell-header">{userInputTranslation.toUpperCase()}</h1>
+                <h1 className="word-to-spell-header">{userInputTranslation}</h1>
                 <div className="input-row">
                     {userInput.map((cell, i) => (
                         <BrailleCellInput key={i} value={cell} onChange={next => setCell(i, next)} />

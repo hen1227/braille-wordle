@@ -1,5 +1,7 @@
-import type {BrailleCell, TypedWord} from "../types/braille.ts";
-import {emptyBrailleCell} from "./DefaultValues.ts";
+import type {BrailleCell} from "../types/braille.ts";
+
+export const TABLES = "unicode.dis,en-ueb-g2.ctb"; // UEB Grade 2 + unicode display
+// export const TABLES = "unicode.dis,en-ueb-g1.ctb"; // UEB Grade 1 + unicode display
 
 export const BRAILLE_PATTERNS: { [key: string]: BrailleCell } = {
     'a': [true, false, false, false, false, false],
@@ -28,31 +30,4 @@ export const BRAILLE_PATTERNS: { [key: string]: BrailleCell } = {
     'x': [true, false, true, true, false, true],
     'y': [true, false, true, true, true, true],
     'z': [true, false, true, false, true, true]
-};
-
-
-export function wordToCells(word?: string): TypedWord {
-    if (!word || word.length !== 5) return to5([]);
-    const cells = word
-        .toLowerCase()
-        .split("")
-        .map(ch => BRAILLE_PATTERNS[ch] ?? emptyBrailleCell);
-    return to5(cells);
-}
-
-export function translateCellsToWord(cells: TypedWord): string {
-    return cells.map(cell => {
-        const entry = Object.entries(BRAILLE_PATTERNS).find(([, pattern]) =>
-            pattern.every((dot, idx) => dot === cell[idx])
-        );
-        return entry ? entry[0] : '_';
-    } ).join('');
-}
-
-
-
-const to5 = (cells: BrailleCell[]): TypedWord => {
-    const pad = [...cells];
-    while (pad.length < 5) pad.push(emptyBrailleCell.slice() as BrailleCell);
-    return pad.slice(0, 5) as TypedWord;
 };

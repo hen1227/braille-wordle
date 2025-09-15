@@ -1,6 +1,6 @@
 export type BrailleCell = [boolean, boolean, boolean, boolean, boolean, boolean];
 
-export type TypedWord = [BrailleCell, BrailleCell, BrailleCell, BrailleCell, BrailleCell];
+export type TypedWord = BrailleCell[];
 
 export interface LetterValidation {
     letter: string;
@@ -15,11 +15,9 @@ export enum Comparison {
     FULL_MATCH = "FULL_MATCH",
 }
 
-export type BrailleCellComparison = [Comparison, Comparison, Comparison, Comparison, Comparison, Comparison];
-export type TypedWordComparison = [
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison
-];
+export type BrailleCellComparison = Comparison[];
+export type TypedWordComparison = BrailleCellComparison[];
+
+// export type TypedWord = [BrailleCell, BrailleCell, BrailleCell, BrailleCell, BrailleCell];
+// export type BrailleCellComparison = [Comparison, Comparison, Comparison, Comparison, Comparison, Comparison];
+// export type TypedWordComparison = [BrailleCellComparison, BrailleCellComparison, BrailleCellComparison, BrailleCellComparison, BrailleCellComparison];

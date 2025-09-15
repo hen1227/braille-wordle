@@ -8,17 +8,18 @@ import {
     type TypedWordComparison
 } from "../types/braille.ts";
 import {emptyTypedWord} from "../utils/DefaultValues.ts";
-import {translateCellsToWord, wordToCells} from "../utils/BrailleTranslation.ts";
 import {toast} from "react-toastify";
 import {POSSIBLE_ANSWERS, VALID_WORDS} from "../utils/WordleAnswers.ts";
 import {dayOfYear, mulberry32, ONE_DAY, startOfYear} from "../utils/Date.ts";
 import {LettersContext} from "./LettersContext.tsx";
 import {keyFor, safeParse} from "../utils/Storage.ts";
+import {useBrailleTranslationContext} from "./useBrailleTranslationContext.tsx";
 
 export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [wordToSpell, setWordToSpell] = useState<string>("loading");
     const [userInput, setUserInput] = useState<TypedWord>(emptyTypedWord);
     const [pastInputs, setPastInputs] = useState<TypedWord[]>([]);
+    const {translateCellsToWords, translateWordsToCells, isInitialized} = useBrailleTranslationContext();
 
     // hydration guard to avoid saving while we're loading from storage
     const hydratingRef = useRef(false);
@@ -38,11 +39,13 @@ export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({child
     const stepNext = () => { if (canGoNext) setSelectedDate(d => new Date(d.getTime() + ONE_DAY)); };
 
     const userInputTranslation = useMemo(
-        () => translateCellsToWord(userInput),
-        [userInput]
+        () => translateCellsToWords(userInput),
+        [userInput, isInitialized]
     );
 
-    const target = useMemo(() => wordToCells(wordToSpell), [wordToSpell]);
+    const target = useMemo(() => {
+        return translateWordsToCells(wordToSpell)
+    }, [wordToSpell, isInitialized]);
 
     // Pick deterministic word for the selected date (or use saved override if present)
     useEffect(() => {
@@ -103,7 +106,9 @@ export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({child
             : (actual ? Comparison.NO_MATCH : Comparison.PARTIAL_MATCH);
 
     const compareCell = (expected: BrailleCell, actual: BrailleCell): BrailleCellComparison => (
-        Array.from({ length: 6 }, (_, i) => compareValue(expected[i], actual[i])) as BrailleCellComparison
+        actual && actual.length === 6 && expected && expected.length === 6 ?
+            Array.from({ length: 6 }, (_, i) => compareValue(expected[i], actual[i])) as BrailleCellComparison :
+            Array(6).fill(Comparison.NO_MATCH) as BrailleCellComparison
     );
 
     const getComparisonFor = React.useCallback((guess: TypedWord): TypedWordComparison => (
