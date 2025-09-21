@@ -1,20 +1,21 @@
-import {type BrailleCell, Comparison} from "../types/braille.ts";
+import {type BrailleCell, type BrailleCellComparison} from "../types/braille.ts";
 import React from "react";
+import {getMatchString} from "../services/comparisonsService.ts";
 
 export const BrailleCellCompareView: React.FC<{
     value: BrailleCell;
-    comps?: Comparison[];
+    comps?: BrailleCellComparison;
 }> = ({ value, comps }) => (
-    <div className="braille-cell">
+    <div className={`braille-cell ${getMatchString(comps?.fullCellComparison)}`}>
         {value.map((isActive, index) => {
-            const matchString = comps ? (comps[index] === Comparison.FULL_MATCH ? "match" : (comps[index] === Comparison.NO_MATCH ? "miss" : "partial")) : "";
+
             return (
                 <span
                     key={index}
                     className={[
                         "braille-dot",
                         isActive ? "active" : "",
-                        matchString
+                        getMatchString(comps?.comparisons[index])
                     ].join(" ")}
                     aria-hidden
                     data-dot={index}

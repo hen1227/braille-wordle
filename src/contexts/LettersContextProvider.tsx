@@ -1,9 +1,8 @@
 // LettersContext.tsx
-import React, {type ReactNode, useEffect, useMemo, useRef, useState} from 'react';
+import React, {type ReactNode, useCallback, useEffect, useMemo, useRef, useState} from 'react';
 import {
-    type BrailleCell,
-    type BrailleCellComparison,
-    Comparison,
+    type BrailleComparisonFunctionType,
+    type CellInfoType, type FullWordInfoType,
     type TypedWord,
     type TypedWordComparison
 } from "../types/braille.ts";
@@ -12,13 +11,21 @@ import {translateCellsToWord, wordToCells} from "../utils/BrailleTranslation.ts"
 import {toast} from "react-toastify";
 import {POSSIBLE_ANSWERS, VALID_WORDS} from "../utils/WordleAnswers.ts";
 import {dayOfYear, mulberry32, ONE_DAY, startOfYear} from "../utils/Date.ts";
-import {LettersContext} from "./LettersContext.tsx";
 import {keyFor, safeParse} from "../utils/Storage.ts";
+import {comparisonConstructor} from "../services/comparisonsService.ts";
+import { LettersContext } from "./LettersContext.tsx";
 
 export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [wordToSpell, setWordToSpell] = useState<string>("loading");
     const [userInput, setUserInput] = useState<TypedWord>(emptyTypedWord);
     const [pastInputs, setPastInputs] = useState<TypedWord[]>([]);
+
+    const [infoByCell, setInfoByCell] = useState<CellInfoType>("cell");
+    const [infoByWord, setInfoByWord] = useState<FullWordInfoType>("wordle");
+
+    const comparisonFunction = useMemo<BrailleComparisonFunctionType>(() => {
+        return comparisonConstructor(infoByCell, infoByWord);
+    }, [infoByCell, infoByWord]);
 
     // hydration guard to avoid saving while we're loading from storage
     const hydratingRef = useRef(false);
@@ -98,17 +105,9 @@ export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({child
         localStorage.setItem(keyFor(selectedDate, "word"), JSON.stringify(wordToSpell));
     }, [selectedDate, wordToSpell]);
 
-    const compareValue = (expected: boolean, actual: boolean): Comparison =>
-        expected && actual ? Comparison.FULL_MATCH
-            : (actual ? Comparison.NO_MATCH : Comparison.PARTIAL_MATCH);
-
-    const compareCell = (expected: BrailleCell, actual: BrailleCell): BrailleCellComparison => (
-        Array.from({ length: 6 }, (_, i) => compareValue(expected[i], actual[i])) as BrailleCellComparison
-    );
-
-    const getComparisonFor = React.useCallback((guess: TypedWord): TypedWordComparison => (
-        Array.from({ length: 5 }, (_, i) => compareCell(target[i], guess[i])) as TypedWordComparison
-    ), [target]);
+    const getComparisonFor = useCallback((guess: TypedWord): TypedWordComparison => (
+        comparisonFunction(target, guess)
+    ), [target, comparisonFunction]);
 
     const handleWordSubmit = () => {
         if (userInputTranslation.length !== 5 || /[^a-z]/.test(userInputTranslation)) {
@@ -125,20 +124,13 @@ export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({child
 
         setPastInputs(prev => [...prev, userInput]);
         setUserInput(emptyTypedWord);
-        // Saving to localStorage is handled by the effects above
     };
-
-    const wordBrailleTranslation = useMemo(
-        () => `translated word ${wordToSpell}`,
-        [wordToSpell]
-    );
 
     return (
         <LettersContext.Provider value={{
             wordToSpell,
             setWordToSpell,
             target,
-            wordBrailleTranslation,
             userInput,
             setUserInput,
             userInputTranslation,
@@ -153,6 +145,11 @@ export const LettersContextProvider: React.FC<{ children: ReactNode }> = ({child
             canGoNext,
             stepPrev,
             stepNext,
+
+            infoByCell,
+            setInfoByCell,
+            infoByWord,
+            setInfoByWord
         }}>
             {children}
         </LettersContext.Provider>

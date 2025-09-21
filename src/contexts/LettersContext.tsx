@@ -1,11 +1,10 @@
 import React from "react";
-import type {TypedWord, TypedWordComparison} from "../types/braille.ts";
+import type {CellInfoType, FullWordInfoType, TypedWord, TypedWordComparison} from "../types/braille.ts";
 
 export interface LettersContextType {
     wordToSpell: string;
     setWordToSpell: React.Dispatch<React.SetStateAction<string>>;
     target: TypedWord;
-    wordBrailleTranslation: string;
     userInput: TypedWord;
     setUserInput: React.Dispatch<React.SetStateAction<TypedWord>>;
 
@@ -22,6 +21,11 @@ export interface LettersContextType {
     canGoNext: boolean;
     stepPrev: () => void;
     stepNext: () => void;
+
+    infoByCell: CellInfoType;
+    setInfoByCell: React.Dispatch<React.SetStateAction<CellInfoType>>;
+    infoByWord: FullWordInfoType
+    setInfoByWord: React.Dispatch<React.SetStateAction<FullWordInfoType>>;
 }
 
 export const LettersContext = React.createContext<LettersContextType | null>(null);

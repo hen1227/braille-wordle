@@ -1,25 +1,20 @@
-export type BrailleCell = [boolean, boolean, boolean, boolean, boolean, boolean];
-
-export type TypedWord = [BrailleCell, BrailleCell, BrailleCell, BrailleCell, BrailleCell];
-
-export interface LetterValidation {
-    letter: string;
-    expectedBraille: BrailleCell;
-    userBraille: BrailleCell | null;
-    isCorrect: boolean;
-}
+export type BrailleCell = boolean[];
+export type TypedWord = BrailleCell[];
 
 export enum Comparison {
     NO_MATCH = "NO_MATCH",
     PARTIAL_MATCH = "PARTIAL_MATCH",
+    NO_INFO = "NO_INFO",
     FULL_MATCH = "FULL_MATCH",
 }
 
-export type BrailleCellComparison = [Comparison, Comparison, Comparison, Comparison, Comparison, Comparison];
-export type TypedWordComparison = [
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison,
-    BrailleCellComparison
-];
+export type BrailleCellComparison = {
+    comparisons: Comparison[],
+    fullCellComparison: Comparison
+};
+export type TypedWordComparison = BrailleCellComparison[];
+
+export type CellInfoType = "cell" | "dot" | "no-info";
+export type FullWordInfoType = "wordle" | "no-info";
+
+export type BrailleComparisonFunctionType = (guess: TypedWord, target: TypedWord) => TypedWordComparison;

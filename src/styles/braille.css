@@ -13,6 +13,19 @@
     transition: all 0.2s ease;
 }
 
+.braille-cell.miss {
+    border-color: #ff6b6b;
+    box-shadow: 0 0 12px rgba(255, 107, 107, 0.3);
+}
+.braille-cell.match {
+    border-color: #1dd1a1;
+    box-shadow: 0 0 12px rgba(29, 209, 161, 0.3);
+}
+.braille-cell.partial {
+    border-color: #feca57;
+    box-shadow: 0 0 12px rgba(254, 202, 87, 0.3);
+}
+
 .braille-cell.editable:hover {
     border-color: #4ecdc4;
     transform: translateY(-2px);
@@ -57,7 +70,11 @@
     box-shadow: 0 0 8px rgba(29, 209, 161, 0.6);
 }
 
-.braille-dot.partial {}
+.braille-dot.partial {
+    border-color: #feca57;
+    background: #feca57;
+    box-shadow: 0 0 8px rgba(254, 202, 87, 0.6);
+}
 
 .braille-dot.active::after {
     content: '';

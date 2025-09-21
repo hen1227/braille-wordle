@@ -9,6 +9,7 @@ import "./styles/buttons.css";
 import "./styles/braille.css";
 import {useLettersContext} from "./contexts/useLettersContext.tsx";
 import {LettersContextProvider} from "./contexts/LettersContextProvider.tsx";
+import {ModeSelector} from "./componets/ModeSelector.tsx";
 
 function App() {
     return (
@@ -42,6 +43,8 @@ const WrappedApp: React.FC = () => {
                 </time>
                 <button className="btn icon" onClick={stepNext} disabled={!canGoNext} aria-label="Next day">→</button>
             </div>
+
+            <ModeSelector />
 
             <h1>Braille Wordle</h1>
             <p>Toggle the dots to match the hidden 5-letter word.</p>
