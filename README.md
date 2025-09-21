@@ -13,14 +13,8 @@ No live demo at this time.
 - [ ] Accessibility features for visually impaired users
 - [ ] Score tracking and statistics
 - [ ] Shareable results
-- [ ] Contracted UEB braille mode??
+- [ ] UEB Contracted braille mode??
 
-
-## Notes
-With just Uncontracted braille, it is really easy. We've found that starting with "Fuzzy" and "Stiff" gives all but 2 dots. 
-Which is usually enough to answer in 3, at most 4. There might be a better combo too. So we probably need to implement Contracted UEB.
-
-To add Contracted UEB, we need to allow more than just 5-letter words.
 
 ## Authors
 - [Henry Abrahamsen](https://github.com/hen1227)

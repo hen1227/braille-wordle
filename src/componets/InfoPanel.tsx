@@ -1,6 +1,6 @@
 import React from "react";
+import {BRAILLE_PATTERNS} from "../utils/BrailleTranslation"; // adjust path
 import {BrailleCellCompareView} from "./BrailleCellCompareView";
-import {BRAILLE_PATTERNS} from "../utils/BrailleTranslation.ts";
 
 const lettersSorted = Object.keys(BRAILLE_PATTERNS).sort();
 
