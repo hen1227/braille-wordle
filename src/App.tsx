@@ -1,74 +1,49 @@
 import "./App.css";
 import React from "react";
-import type {BrailleCell} from "./types/braille.ts";
-import {BrailleCellInput} from "./componets/BrailleCellInput.tsx";
 import {ToastContainer} from "react-toastify";
-import {PastGuessRow} from "./componets/PastGuessRow.tsx";
-import {InfoPanel} from "./componets/InfoPanel.tsx";
 import "./styles/buttons.css";
 import "./styles/braille.css";
-import {useLettersContext} from "./contexts/useLettersContext.tsx";
-import {LettersContextProvider} from "./contexts/LettersContextProvider.tsx";
-import {ModeSelector} from "./componets/ModeSelector.tsx";
+import {GameContextProvider} from "./contexts/GameContextProvider.tsx";
+import {BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import LandingPage from "./pages/LandingPage.tsx";
+import GamePage from "./pages/GamePage.tsx";
+import {useGameContext} from "./contexts/useGameContext.tsx";
+import Footer from "./components/Footer.tsx";
 
-function App() {
+const ThemedToastContainer: React.FC = () => {
+    const {darkMode} = useGameContext();
     return (
-        <LettersContextProvider>
-            <ToastContainer />
-            <WrappedApp/>
-        </LettersContextProvider>
+        <ToastContainer
+            position="top-right"
+            autoClose={2500}
+            hideProgressBar
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme={darkMode ? "dark" : "light"}
+            limit={3}
+        />
     );
 }
 
-const WrappedApp: React.FC = () => {
-    const {
-        userInputTranslation, userInput, setUserInput, handleWordSubmit, pastInputs,
-        selectedDate, stepPrev, stepNext, canGoPrev, canGoNext
-    } = useLettersContext();
-
-    const setCell = (idx: number, next: BrailleCell) => {
-        setUserInput(prev => {
-            const copy = prev.map(c => c.slice()) as typeof prev;
-            copy[idx] = next;
-            return copy;
-        });
-    };
-
+function App() {
     return (
-        <div className="game-container">
-            <div className="date-nav">
-                <button className="btn icon" onClick={stepPrev} disabled={!canGoPrev} aria-label="Previous day">←</button>
-                <time className="date-label">
-                    {selectedDate.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-                </time>
-                <button className="btn icon" onClick={stepNext} disabled={!canGoNext} aria-label="Next day">→</button>
-            </div>
+        <GameContextProvider>
+            <BrowserRouter>
+                <ThemedToastContainer />
+                <Routes>
+                    <Route path="/" element={<LandingPage/>}/>
+                    <Route path="/play" element={<GamePage/>}/>
 
-            <ModeSelector />
-
-            <h1>Braille Wordle</h1>
-            <p>Toggle the dots to match the hidden 5-letter word.</p>
-
-            <section className="past-inputs">
-                {pastInputs.map((guess, i) => <PastGuessRow key={i} guess={guess} />)}
-            </section>
-
-            <section className="input-grid">
-                <h1 className="word-to-spell-header">{userInputTranslation.toUpperCase()}</h1>
-                <div className="input-row">
-                    {userInput.map((cell, i) => (
-                        <BrailleCellInput key={i} value={cell} onChange={next => setCell(i, next)} />
-                    ))}
-                </div>
-
-                <button className="btn submit-btn" onClick={handleWordSubmit}>Submit</button>
-            </section>
-
-            <div className="info-panel-wrap">
-                <InfoPanel />
-            </div>
-        </div>
+                    <Route path="*" element={<Navigate to="/" replace/>}/>
+                </Routes>
+                <Footer />
+            </BrowserRouter>
+        </GameContextProvider>
     );
-};
+}
 
 export default App;

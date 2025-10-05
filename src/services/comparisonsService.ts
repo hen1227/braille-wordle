@@ -1,10 +1,18 @@
 import {
-    type BrailleCell, type BrailleCellComparison,
-    type BrailleComparisonFunctionType, type CellInfoType,
-    Comparison, type FullWordInfoType,
+    type BrailleCell, type BrailleCellComparison, type BrailleComparisonFunctionType, Comparison,
     type TypedWord,
 } from "../types/braille.ts";
+import type {CellInfoType, FullWordInfoType} from "../types/game.ts";
+import {MAX_GUESSES} from "../utils/Game.ts";
 
+/**
+ * Compares two boolean values and returns a Comparison enum value.
+ * If both are true, returns FULL_MATCH.
+ * If actual is true but expected is false, returns NO_MATCH.
+ * If actual is false, returns NO_INFO.
+ * @param expected
+ * @param actual
+ */
 const compareValue = (expected: boolean, actual: boolean): Comparison =>
     expected && actual ? Comparison.FULL_MATCH
         : (actual ? Comparison.NO_MATCH : Comparison.NO_INFO);
@@ -14,13 +22,13 @@ const compareValue = (expected: boolean, actual: boolean): Comparison =>
  * Checks and colors the dots based on what's in the cell. Just checks if a dot is on or off and if it should be.
  * If it is but shouldn't be, it's a NO_MATCH. If it is and should be, FULL_MATCH. Else, NO_INFO.
  *
- * @param expected the expected word
- * @param actual the actual word
+ * @param expected the expected BrailleCell
+ * @param actual the actual BrailleCell
  *
  * @returns TypedWordComparison indicating the comparison results for each dot in each cell
  */
 const compareCell = (expected: BrailleCell, actual: BrailleCell): Comparison[] => (
-    Array.from({length: 6}, (_, i) => compareValue(expected[i], actual[i]))
+    Array.from({length: MAX_GUESSES}, (_, i) => compareValue(expected[i], actual[i]))
 );
 
 
@@ -28,6 +36,9 @@ const compareCell = (expected: BrailleCell, actual: BrailleCell): Comparison[] =
  * Returns a comparison for the entire cell based on the traditional Wordle rules. Colors entire words
  * at a time based on if the entire character is correct, partially correct, or incorrect.
  *
+ * @param index the index of the cell to get the comparison for
+ * @param target the target TypedWord
+ * @param guess the guessed TypedWord
  */
 const getFullCellComparison = (index: number, target: TypedWord, guess: TypedWord): Comparison => {
     const keyOf = (cell: BrailleCell) => cell.map(b => (b ? "1" : "0")).join("");
@@ -66,8 +77,15 @@ const getFullCellComparison = (index: number, target: TypedWord, guess: TypedWor
     return marks[index]!;
 };
 
+/**
+ * Returns a Comparison indicating no information for the full cell comparison.
+ */
 const getNoInfoFullCellComparison = (): Comparison => Comparison.NO_INFO;
 
+/**
+ * Converts a Comparison enum value to a corresponding string for CSS class names.
+ * @param cmp
+ */
 export const getMatchString = (cmp?: Comparison): string => {
     if (!cmp) return "no-info";
     switch (cmp) {
@@ -98,11 +116,11 @@ export const getMatchString = (cmp?: Comparison): string => {
 const dotByDotComparison = (target: TypedWord, guess: TypedWord): Comparison[][] => {
     // result initialized to NO_INFO
     const res: Comparison[][] = Array.from({length: 5}, () =>
-        Array.from({length: 6}, () => Comparison.NO_INFO)
+        Array.from({length: MAX_GUESSES}, () => Comparison.NO_INFO)
     );
 
-    const numberOfEachDotInTarget: number[] = Array.from({length: 6}, () => 0);
-    const numberOfEachDotSoFarInGuess: number[] = Array.from({length: 6}, () => 0);
+    const numberOfEachDotInTarget: number[] = Array.from({length: MAX_GUESSES}, () => 0);
+    const numberOfEachDotSoFarInGuess: number[] = Array.from({length: MAX_GUESSES}, () => 0);
 
     // count how many of each dot there are in the target
     target.forEach(cell => {
@@ -153,14 +171,14 @@ export const comparisonConstructor = (
     fullWordMethod: FullWordInfoType
 ): BrailleComparisonFunctionType => {
     return (target: TypedWord, guess: TypedWord): BrailleCellComparison[] => {
-        return Array.from({ length: 5 }, (_, i) => {
+        return Array.from({length: 5}, (_, i) => {
             let comparisons: Comparison[];
             if (dotMethod === "cell") {
                 comparisons = compareCell(target[i], guess[i]);
             } else if (dotMethod === "dot") {
                 comparisons = dotByDotComparison(target, guess)[i]!;
             } else {
-                comparisons = Array.from({ length: 6 }, () => Comparison.NO_INFO);
+                comparisons = Array.from({length: MAX_GUESSES}, () => Comparison.NO_INFO);
             }
 
             let fullCellComparison: Comparison;
@@ -170,7 +188,7 @@ export const comparisonConstructor = (
                 fullCellComparison = getNoInfoFullCellComparison();
             }
 
-            return { comparisons, fullCellComparison };
+            return {comparisons, fullCellComparison};
         });
     };
 };

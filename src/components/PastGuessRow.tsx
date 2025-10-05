@@ -1,14 +1,14 @@
+// src/components/PastGuessRow.tsx
 import type {TypedWord} from "../types/braille.ts";
 import {BrailleCellCompareView} from "./BrailleCellCompareView.tsx";
 import React from "react";
-import {translateCellsToWord} from "../utils/BrailleTranslation.ts";
-import {useLettersContext} from "../contexts/useLettersContext.tsx";
+import {translateCellsToWord} from "../services/brailleTranslationService.ts";
+import {useGameContext} from "../contexts/useGameContext.tsx";
 
 export const PastGuessRow: React.FC<{
     guess: TypedWord;
-}> = ({ guess }) => {
-
-    const {getComparisonFor} = useLettersContext();
+}> = ({guess}) => {
+    const {getComparisonFor} = useGameContext();
     const comps = getComparisonFor(guess);
     const guessWord = translateCellsToWord(guess);
 
@@ -17,7 +17,7 @@ export const PastGuessRow: React.FC<{
             <div className="guess-word-label">{guessWord.toUpperCase()}</div>
             <div className="input-row past-row">
                 {guess.map((cell, i) => (
-                    <BrailleCellCompareView key={i} value={cell} comps={comps[i]} />
+                    <BrailleCellCompareView key={i} value={cell} comps={comps[i]}/>
                 ))}
             </div>
         </div>

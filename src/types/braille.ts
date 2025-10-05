@@ -12,9 +12,7 @@ export type BrailleCellComparison = {
     comparisons: Comparison[],
     fullCellComparison: Comparison
 };
-export type TypedWordComparison = BrailleCellComparison[];
 
-export type CellInfoType = "cell" | "dot" | "no-info";
-export type FullWordInfoType = "wordle" | "no-info";
+export type TypedWordComparison = BrailleCellComparison[];
 
 export type BrailleComparisonFunctionType = (guess: TypedWord, target: TypedWord) => TypedWordComparison;

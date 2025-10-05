@@ -1,5 +1,5 @@
 .btn {
-    border-radius: 12px;
+    border-radius: var(--radius);
     border: 2px solid transparent;
     padding: 0.8em 1.6em;
     font-size: 1em;
@@ -7,139 +7,79 @@
     font-family: inherit;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    color: white;
-    text-transform: uppercase;
+    color: var(--text);
     letter-spacing: 0.05em;
     position: relative;
     overflow: hidden;
-    background: #333c;
-}
-
-.btn::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s, height 0.6s;
-}
-
-.btn:hover::before {
-    width: 300px;
-    height: 300px;
+    background: var(--bg-light);
+    box-shadow: var(--shadow-s);
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-m);
+    background: color-mix(in oklch, var(--bg-light) 85%, var(--highlight) 15%);
 }
 
 .btn:active {
     transform: translateY(0);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-s);
 }
 
 .btn:focus,
 .btn:focus-visible {
     outline: none;
-    box-shadow: 0 0 0 3px rgba(78, 205, 196, 0.5);
+    box-shadow: 0 0 0 3px color-mix(in oklch, var(--brand) 50%, transparent);
 }
 
 .btn:disabled {
-    opacity: 0.5;
+    opacity: 0.2;
     cursor: not-allowed;
     transform: none;
 }
 
 .btn:disabled:hover {
     transform: none;
-    box-shadow: none;
+    box-shadow: var(--shadow-s);
+    background: var(--bg-light);
 }
 
 .btn.submit-btn {
-    background: linear-gradient(135deg, #4ecdc4 0%, #44a3aa 100%);
-    color: white;
+    background: linear-gradient(135deg, var(--brand) 0%, color-mix(in oklch, var(--brand) 85%, var(--bg-dark) 15%) 100%);
+    color: var(--bg-dark);
     border: none;
     font-size: 1.1rem;
     padding: 1em 2.5em;
     min-width: 200px;
+    font-weight: 700;
+    box-shadow: var(--shadow-m);
 }
 
 .btn.submit-btn:hover {
-    background: linear-gradient(135deg, #5eded6 0%, #4fb3bb 100%);
+    background: linear-gradient(135deg, var(--brand-light) 0%, var(--brand) 100%);
+    box-shadow: var(--shadow-l);
 }
 
-.btn.secondary {
-    background: rgba(255, 255, 255, 0.1);
-    border: 2px solid rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(5px);
-}
-
-.btn.secondary:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-}
-
-.btn.danger {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
-}
-
-.btn.danger:hover {
-    background: linear-gradient(135deg, #ff7979 0%, #ff6b7a 100%);
-}
-
-.btn.success {
-    background: linear-gradient(135deg, #1dd1a1 0%, #10ac84 100%);
-}
-
-.btn.success:hover {
-    background: linear-gradient(135deg, #2ee1b1 0%, #20bc94 100%);
-}
-
-/* Small button variant */
-.btn.small {
-    padding: 0.5em 1em;
-    font-size: 0.9rem;
+.btn.submit-btn:active {
+    box-shadow: var(--shadow-m);
 }
 
 /* Icon button variant */
-.btn.icon-btn {
-    padding: 0.8em;
+.btn.icon {
+    padding: 0.65em;
     min-width: auto;
-    width: 44px;
-    height: 44px;
-    display: flex;
+    width: 42px;
+    height: 42px;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: 50%;
+    border-radius: 9999px;
+    background: color-mix(in oklch, var(--bg-light) 60%, transparent);
+    border: 1px solid var(--border-color-muted);
+    box-shadow: var(--shadow-s);
 }
 
-/* Loading state */
-.btn.loading {
-    color: transparent;
-}
-
-.btn.loading::after {
-    content: '';
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    top: 50%;
-    left: 50%;
-    margin-left: -10px;
-    margin-top: -10px;
-    border: 2px solid #ffffff;
-    border-radius: 50%;
-    border-top-color: transparent;
-    animation: spinner 0.8s linear infinite;
-}
-
-@keyframes spinner {
-    to {
-        transform: rotate(360deg);
-    }
+.btn.icon:hover {
+    background: color-mix(in oklch, var(--bg-light) 80%, transparent);
+    border-color: var(--border-color);
 }

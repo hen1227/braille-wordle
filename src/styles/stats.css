@@ -1,0 +1,257 @@
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 12px 0;
+}
+
+/* Individual Stat Tile */
+.stat-tile {
+    background: var(--bg);
+    padding: 16px;
+    border-radius: var(--radius);
+    text-align: center;
+    box-shadow: var(--shadow-m);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.stat-tile:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-l);
+}
+
+.stat-value {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.75;
+    color: var(--text-muted);
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+/* Guess Distribution Container */
+.stats-panel {
+    background: var(--bg-dark);
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sunken-l);
+    margin: 8px auto 24px;
+
+    gap: 8px;
+
+    width: 100%;
+    /*max-width: 500px;*/
+}
+.stats-panel.foreground {
+    background: var(--bg-light);
+    box-shadow: var(--shadow-m);
+}
+
+.guess-distribution-title {
+    text-align: center;
+    margin: 0 0 10px;
+    color: var(--text);
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.guess-distribution-grid {
+    display: grid;
+    gap: 8px;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.distribution-row {
+    display: grid;
+    grid-template-columns: 30px 1fr auto;
+    gap: 8px;
+    align-items: center;
+}
+
+.distribution-number {
+    text-align: right;
+    opacity: 0.8;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-right: 8px;
+}
+
+.distribution-bar {
+    background: var(--brand);
+    border-radius: 8px;
+    height: 24px;
+    min-width: 4px;
+    box-shadow: var(--shadow-s);
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+/* Add a subtle gradient to the bar */
+.distribution-bar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 50%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.15) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+.distribution-bar:hover {
+    background: var(--brand-light);
+    transform: scaleX(1.02);
+    box-shadow: var(--shadow-m);
+}
+
+.distribution-count {
+    opacity: 0.85;
+    color: var(--text);
+    font-weight: 600;
+    min-width: 20px;
+    text-align: right;
+}
+
+/* Modal Styles */
+.stats-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+    display: grid;
+    place-items: center;
+    z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+    backdrop-filter: blur(4px);
+}
+
+.stats-modal-content {
+    width: min(720px, 92vw);
+    background: var(--bg-light);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    padding: 20px;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stats-modal-header {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.stats-modal-close {
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 30px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--radius);
+    transition: background 0.2s ease;
+}
+
+.stats-modal-close:hover {
+    background: color-mix(in oklch, var(--bg) 50%, transparent);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .stats-modal-content {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-tile {
+        padding: 12px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .stat-label {
+        font-size: 11px;
+    }
+
+    .guess-distribution {
+        padding: 12px;
+    }
+
+    .distribution-bar {
+        height: 20px;
+    }
+}

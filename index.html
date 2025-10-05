@@ -1,13 +1,83 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Braille Wordle</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+    <meta charset="utf-8" />
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+
+    <title>Braille Wordle — Learn & Practice Braille</title>
+    <meta
+            name="description"
+            content="Play Braille Wordle: toggle braille dots to guess the hidden 5-letter word. A fast, accessible way to learn and practice uncontracted braille."
+    />
+
+    <!-- Canonical -->
+    <link rel="canonical" href="https://wordle.brailledecoded.com/" />
+
+    <!-- Favicons / PWA -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="msapplication-TileColor" content="#101418" />
+    <meta name="application-name" content="Braille Wordle" />
+    <meta name="apple-mobile-web-app-title" content="Braille Wordle" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!-- Theme color (light/dark aware) -->
+    <meta name="theme-color" content="#101418" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0b0b0b" media="(prefers-color-scheme: dark)" />
+
+    <!-- Robots (explicit allow; remove or change if you need to block) -->
+    <meta name="robots" content="index, follow" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Braille Wordle" />
+    <meta property="og:title" content="Braille Wordle — Learn & Practice UEB" />
+    <meta
+            property="og:description"
+            content="Toggle braille dots to guess the hidden 5-letter word. Practice Unified English Braille the fun way."
+    />
+    <meta property="og:url" content="https://wordle.brailledecoded.com/" />
+    <meta property="og:image" content="/og-image.png" />
+    <meta property="og:image:alt" content="Braille Wordle gameplay preview" />
+
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Braille Wordle — Learn & Practice UEB" />
+    <meta
+            name="twitter:description"
+            content="Toggle braille dots to guess the hidden 5-letter word. Practice Unified English Braille the fun way."
+    />
+    <meta name="twitter:image" content="/og-image.png" />
+
+    <!-- Color scheme hint -->
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- Social/SEO structured data -->
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@type": "WebApplication",
+            "name": "Braille Wordle",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Web",
+            "url": "https://wordle.brailledecoded.com/",
+            "image": "https://wordle.brailledecoded.com/og-image.png",
+            "description": "Toggle braille dots to guess the hidden 5-letter word. A fast, accessible way to learn and practice uncontracted braille.",
+            "genre": ["Puzzle", "Word game", "Educational"],
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+        }
+    </script>
+</head>
+<body>
+<div id="root"></div>
+<script type="module" src="/src/main.tsx"></script>
+</body>
 </html>
